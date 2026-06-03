@@ -12,7 +12,7 @@ DATABASE_URL = "tasks.db"
 async def get_categories():
     async with aiosqlite.connect(DATABASE_URL) as db:
         db.row_factory = aiosqlite.Row
-        async with db.execute("SELECT id, slug, name, svg_icon FROM categories") as cursor:
+        async with db.execute("SELECT id, slug, name, icon FROM categories") as cursor:
             rows = await cursor.fetchall()
             return [dict(row) for row in rows]
 
@@ -23,7 +23,7 @@ async def get_random_task(category_slug: str = Query(None), difficulty: int = Qu
         
         query = """
             SELECT tasks.id, tasks.title, tasks.description, tasks.difficulty, 
-                   categories.name as category_name, categories.svg_icon
+                   categories.name as category_name, categories.icon
             FROM tasks
             JOIN categories ON tasks.category_id = categories.id
             WHERE 1=1

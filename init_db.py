@@ -29,7 +29,7 @@ def init_database():
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 slug TEXT UNIQUE NOT NULL,
                 name TEXT NOT NULL,
-                svg_icon TEXT NOT NULL
+                icon TEXT NOT NULL
             )
         ''')
 
@@ -59,7 +59,7 @@ def init_database():
                 user_id INTEGER NOT NULL,
                 task_id INTEGER NOT NULL,
                 status TEXT DEFAULT 'saved',
-                date_added TEXT NOT NULL,
+                date_added TEXT DEFAULT CURRENT_TIMESTAMP,
                 FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
                 FOREIGN KEY (task_id) REFERENCES tasks (id) ON DELETE CASCADE
             )
@@ -69,7 +69,7 @@ def init_database():
             (cat['slug'], cat['name'], cat['icon_file'])
             for cat in source_data['categories']
         ]
-        cursor.executemany('INSERT INTO categories (slug, name, svg_icon) VALUES (?, ?, ?)', categories_to_insert)
+        cursor.executemany('INSERT INTO categories (slug, name, icon) VALUES (?, ?, ?)', categories_to_insert)
 
         cursor.execute("SELECT id, slug FROM categories")
         cat_mapping = {slug: cat_id for cat_id, slug in cursor.fetchall()}
