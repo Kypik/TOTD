@@ -5,7 +5,7 @@ from contextlib import asynccontextmanager
 import logging  
 
 from init_db import init_database
-from routers import tasks
+from routers import tasks, users
 
 logging.basicConfig(
     level=logging.INFO,
@@ -40,6 +40,7 @@ app.add_middleware(
 )
 
 app.include_router(tasks.router)
+app.include_router(users.router)
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 @app.get("/")

@@ -17,10 +17,7 @@ async def get_categories():
             return [dict(row) for row in rows]
 
 @router.get("/tasks/random")
-async def get_random_task(
-    category_slug: str = Query(None),
-    difficulty: int = Query(None)
-):
+async def get_random_task(category_slug: str = Query(None), difficulty: int = Query(None)):
     async with aiosqlite.connect(DATABASE_URL) as db:
         db.row_factory = aiosqlite.Row
         
