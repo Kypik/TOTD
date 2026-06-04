@@ -31,8 +31,13 @@ async def login_user(name: str, password: str):
             if user["password_hash"] != password:
                 raise HTTPException(status_code=401, detail="Неверный пароль!")
                 
-            return {"status": "success",
-                    "message": f"Пользователь {name} успешно вошел в аккаунт"}
+            return {
+                "status": "success",
+                "message": f"Пользователь {name} успешно вошел в аккаунт",
+                "user_id": user["id"],
+                "username": user["username"],
+                "role": user["role"]
+            }
 
 @router.post("/user/tasks/save")
 async def save_task_to_profile(user_id: int, task_id: int):

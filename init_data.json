@@ -3,17 +3,17 @@
     {
       "slug": "code",
       "name": "Программирование",
-      "icon_file": "static/icons/laptop.svg"
+      "icon_file": "static/icons/code-window.svg"
     },
     {
       "slug": "art",
       "name": "Творчество",
-      "icon_file": "static/icons/art.svg"
+      "icon_file": "static/icons/palette.svg"
     },
     {
       "slug": "life",
       "name": "Жизненные навыки",
-      "icon_file": "static/icons/life.svg"
+      "icon_file": "static/icons/bulb.svg"
     }
   ],
   "tasks": [

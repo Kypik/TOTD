@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Панель администратора — RandomTask</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="bg-grid"></div>
+    <div class="bg-glow bg-glow--1"></div>
+    <div class="bg-glow bg-glow--2"></div>
+
+    <header class="header">
+        <div class="header__inner">
+            <a href="index.html" class="logo">
+                <span class="logo__mark">&gt;_</span>
+                <span>Random</span>Task
+            </a>
+            <nav class="nav">
+                <a href="index.html" class="nav__link">Главная</a>
+                <a href="profile.html" class="nav__link">Профиль</a>
+                <a href="admin.html" class="nav__link nav__link--active">Админка</a>
+                <a href="auth.html" class="nav__link" id="nav-auth-link">Войти</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="app-container">
+        <!-- Сообщение об ошибке доступа -->
+        <div id="admin-access-denied" class="panel hidden" style="max-width: 520px; margin: 2rem auto; text-align: center;">
+            <h2 style="color: #f87171; margin-bottom: 0.75rem;">Доступ запрещён</h2>
+            <p style="color: var(--muted); margin-bottom: 1.5rem;">Эта страница доступна только администраторам.</p>
+            <a href="index.html" class="btn btn--outline">Вернуться на главную</a>
+        </div>
+
+        <!-- Основной контент админки -->
+        <div id="admin-content" class="hidden">
+            <div class="admin-header">
+                <h1 class="admin-title">Панель администратора</h1>
+                <p class="admin-subtitle">Управление категориями и задачами</p>
+            </div>
+
+            <div class="admin-layout">
+                <!-- Левая колонка: Категории -->
+                <section class="panel admin-panel">
+                    <div class="admin-panel__header">
+                        <h2 class="admin-panel__title">Категории</h2>
+                        <span class="admin-panel__badge" id="categories-count">0</span>
+                    </div>
+
+                    <form id="category-form" class="admin-form">
+                        <div class="field">
+                            <span>Название</span>
+                            <input type="text" id="cat-name" placeholder="Программирование" required>
+                        </div>
+                        <div class="field">
+                            <span>Slug (URL-идентификатор)</span>
+                            <input type="text" id="cat-slug" placeholder="programming" required pattern="[a-z0-9\-]+">
+                        </div>
+                        <div class="field">
+    				<span>Иконка категории</span>
+    				<div class="icon-picker">
+        				<div class="icon-preview" id="icon-preview">
+            					<span class="icon-preview__placeholder">Выберите иконку</span>
+        				</div>
+        				<select id="cat-icon" required>
+            					<option value="">Загрузка иконок…</option>
+        				</select>
+    				</div>
+			</div>
+                        <div id="category-message" class="admin-message hidden"></div>
+                        <button type="submit" class="btn btn--primary btn--full">Создать категорию</button>
+                    </form>
+
+                    <div class="admin-divider"></div>
+
+                    <h3 class="admin-section-title">Существующие категории</h3>
+                    <div id="categories-list" class="admin-list">
+                        <p class="empty-message">Загрузка…</p>
+                    </div>
+                </section>
+
+                <!-- Правая колонка: Задачи -->
+                <section class="panel admin-panel">
+                    <div class="admin-panel__header">
+                        <h2 class="admin-panel__title">Новая задача</h2>
+                    </div>
+
+                    <form id="task-form" class="admin-form">
+                        <div class="field">
+                            <span>Категория</span>
+                            <select id="task-category" required>
+                                <option value="">Загрузка категорий…</option>
+                            </select>
+                        </div>
+                        <div class="field">
+                            <span>Заголовок</span>
+                            <input type="text" id="task-title" placeholder="Написать функцию сортировки" required>
+                        </div>
+                        <div class="field">
+                            <span>Описание</span>
+                            <textarea id="task-description" rows="4" placeholder="Реализуйте алгоритм сортировки массива…" required></textarea>
+                        </div>
+                        <div class="field">
+                            <span>Сложность</span>
+                            <select id="task-difficulty" required>
+                                <option value="1">Низкая</option>
+                                <option value="2" selected>Средняя</option>
+                                <option value="3">Высокая</option>
+                            </select>
+                        </div>
+                        <div id="task-message" class="admin-message hidden"></div>
+                        <button type="submit" class="btn btn--primary btn--full">Добавить задачу</button>
+                    </form>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
