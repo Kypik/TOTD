@@ -1,29 +1,31 @@
 import sqlite3
 import json
 import os
+import logging
+
+logger = logging.getLogger("INIT_DB")
 
 DB_PATH = 'tasks.db'
 JSON_PATH = 'init_data.json'
 
 def init_database():
     if os.path.exists(DB_PATH):
-        print(f"[БАЗА ДАННЫХ] Файл '{DB_PATH}' обнаружен. Инициализация не требуется.")
+        logger.info(f"Файл '{DB_PATH}' обнаружен. Инициализация не требуется.")
         return
 
-    print(f"[БАЗА ДАННЫХ] Файл '{DB_PATH}' не найден. Начинаю автоматическое развертывание...")
+    logger.info(f"Файл '{DB_PATH}' не найден. Начинаю автоматическое развертывание...")
 
     if not os.path.exists(JSON_PATH):
-        print(f"[ОШИБКА] Не удалось создать БД: отсутствует конфигурационный файл '{JSON_PATH}'!")
+        logger.critical(f"Не удалось создать БД: отсутствует конфигурационный файл '{JSON_PATH}'!")
         return
 
     with open(JSON_PATH, 'r', encoding='utf-8') as f:
         source_data = json.load(f)
-    
+
     with sqlite3.connect(DB_PATH) as conn:
         cursor = conn.cursor()
         cursor.execute('PRAGMA foreign_keys = ON')
 
-        # Создание таблиц
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS categories (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -86,4 +88,4 @@ def init_database():
         ]
         cursor.executemany('INSERT INTO users (username, password_hash, role) VALUES (?, ?, ?)', initial_users)
 
-        print("[УСПЕХ] База данных успешно развернута.")
+        logger.info("База данных успешно развернута.")

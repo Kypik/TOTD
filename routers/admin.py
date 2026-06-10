@@ -1,10 +1,8 @@
 from fastapi import APIRouter, HTTPException
 import aiosqlite
-import logging
 import os
 
 router = APIRouter(prefix="/api", tags=["Панель администрации"])
-logger = logging.getLogger("admin")
 
 ICONS_DIR = "static/icons"
 DATABASE_URL = "tasks.db"

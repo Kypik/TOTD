@@ -222,7 +222,6 @@ async function loadAdminIcons() {
         selectEl.innerHTML = `<option value="">— Выберите иконку —</option>`;
         icons.forEach(icon => {
             const opt = document.createElement("option");
-            // Сохраняем путь в формате /static/icons/xxx.svg
             opt.value = `/static/icons/${icon.filename}`;
             opt.textContent = icon.filename;
             selectEl.appendChild(opt);
@@ -235,7 +234,6 @@ async function loadAdminIcons() {
                 previewEl.innerHTML = `<span class="icon-preview__placeholder">Выберите иконку</span>`;
                 return;
             }
-            // Путь уже правильный: /static/icons/xxx.svg
             const iconUrl = API_BASE + value;
             previewEl.innerHTML = `
                 <img 
@@ -272,7 +270,7 @@ function setupAdminForms() {
             e.preventDefault();
             const name = document.getElementById("cat-name").value.trim();
             const slug = document.getElementById("cat-slug").value.trim().toLowerCase();
-            const icon = document.getElementById("cat-icon").value;  // путь /static/icons/xxx.svg
+            const icon = document.getElementById("cat-icon").value;  
             
             if (!name || !slug || !icon) {
                 showAdminMessage("category-message", "Заполните все поля и выберите иконку", "error");
@@ -333,7 +331,6 @@ function setupAdminForms() {
     }
 }
 
-// ── profile ───────────────────────────────────────────────────────────────────
 async function loadProfile() {
     const user = getUser();
     if (!user) { window.location.href = "auth.html"; return; }
@@ -452,7 +449,6 @@ async function handleTaskAction(action, taskId, btnElement) {
     }
 }
 
-// ── nav ───────────────────────────────────────────────────────────────────────
 function updateNavAuth() {
     const authLink = document.getElementById("nav-auth-link");
     const adminLink = document.getElementById("nav-admin-link");
@@ -477,7 +473,6 @@ function updateNavAuth() {
     }
 }
 
-// ── categories (index.html) ──────────────────────────────────────────────────
 async function loadCategories() {
     const grid = document.getElementById("categories-grid");
     if (!grid) return;
@@ -490,7 +485,6 @@ async function loadCategories() {
             btn.className = "cat-btn";
             btn.dataset.slug = cat.slug;
             
-            // ИСПОЛЬЗУЕМ НОВУЮ ФУНКЦИЮ getIconUrl для исправления старых путей
             const iconUrl = getIconUrl(cat.icon);
             const iconHtml = isIconPath(cat.icon)
                 ? `<img src="${iconUrl}" alt="${cat.name}" style="width:2rem;height:2rem;object-fit:contain;">`
@@ -512,7 +506,6 @@ function selectCategory(cat) {
     showSection("step-params");
 }
 
-// ── task generation ───────────────────────────────────────────────────────────
 async function generateTask() {
     if (!selectedCategory) return;
     const difficultyInput = document.querySelector('input[name="difficulty"]:checked');
@@ -544,6 +537,31 @@ function renderTask(task, difficulty) {
     if (catBadge) catBadge.textContent = selectedCategory?.name ?? "";
     if (diffBadge) diffBadge.textContent =
         diffLabels[String(difficulty ?? task.difficulty)] ?? `Сложность ${task.difficulty}`;
+
+    loadSavedCount(task.id);
+}
+
+async function loadSavedCount(taskId) {
+    const countBadge = document.getElementById("task-saved-count");
+    
+    if (!countBadge || !taskId) return;
+    
+    try {
+        const data = await apiFetch(`/api/tasks/count_saved?task_id=${taskId}`);
+        if (data && data.count_saved_task !== undefined) {
+            const count = data.count_saved_task;
+            if (count > 0) {
+                countBadge.textContent = `Пользователей сохранило: ${count}`;
+                countBadge.style.display = "";
+            } else {
+                countBadge.style.display = "none";
+            }
+        } else {
+        }
+    } catch (err) {
+        console.error("Ошибка загрузки количества сохранений:", err);
+        countBadge.style.display = "none";
+    }
 }
 
 async function rerollTask() {
@@ -581,7 +599,6 @@ async function saveTask() {
     }
 }
 
-// ── initialization ────────────────────────────────────────────────────────────
 document.addEventListener("DOMContentLoaded", () => {
     updateNavAuth();
     

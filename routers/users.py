@@ -1,9 +1,7 @@
 from fastapi import APIRouter, HTTPException
 import aiosqlite
-import logging
 
 router = APIRouter(prefix="/api", tags=["Личный кабинет и авторизация"])
-logger = logging.getLogger("AUTH")
 
 DATABASE_URL = "tasks.db"
 

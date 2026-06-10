@@ -1,10 +1,8 @@
 from fastapi import APIRouter, HTTPException, Query
 import aiosqlite
 import random
-import logging
 
 router = APIRouter(prefix="/api", tags=["Задачи"])
-logger = logging.getLogger("TASKS")
 
 DATABASE_URL = "tasks.db"
 
@@ -45,7 +43,7 @@ async def get_random_task(category_slug: str = Query(None), difficulty: int = Qu
             
             return dict(random.choice(tasks))
         
-@router.get("tasks/count_saved")
+@router.get("/tasks/count_saved")
 async def get_count_saved(task_id: int, status: str = "saved"):
     async with aiosqlite.connect(DATABASE_URL) as db:
         async with db.execute("""SELECT COUNT(*) FROM user_tasks WHERE task_id = ? AND status = ?""", (task_id, status)) as cursor:

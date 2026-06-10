@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse, RedirectResponse
 from contextlib import asynccontextmanager
-import logging  
+import logging
 
 from init_db import init_database
 from routers import tasks, users, admin
@@ -16,21 +16,29 @@ logging.basicConfig(
         logging.FileHandler("app.log", encoding="utf-8")
     ]
 )
-
 logger = logging.getLogger("MAIN")
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    logger.info("Запуск сервера. Начинаю проверку базы данных...")
+    logger.info("=" * 60)
+    logger.info("Запуск сервера RandomTask API...")
+    logger.info("=" * 60)
     try:
         init_database()
         logger.info("Инициализация базы данных успешно завершена.")
     except Exception as e:
-        logger.error(f"Критическая ошибка при старте базы данных: {e}", exc_info=True)
+        logger.critical(f"Критическая ошибка при старте базы данных: {e}", exc_info=True)
     yield
-    logger.info("Сервер останавливается...")
+    logger.info("Сервер останавливается. До свидания!")
 
-app = FastAPI(title="Random Task Generator API", lifespan=lifespan)
+
+app = FastAPI(
+    title="Random Task Generator API",
+    description="Бэкенд для генератора случайных задач",
+    version="1.0.0",
+    lifespan=lifespan
+)
 
 app.add_middleware(
     CORSMiddleware,
@@ -43,8 +51,7 @@ app.add_middleware(
 app.include_router(tasks.router)
 app.include_router(users.router)
 app.include_router(admin.router)
-app.mount("/static", StaticFiles(directory="static"), name="static")
-    
+
 @app.middleware("http")
 async def redirect_html_requests(request: Request, call_next):
     path = request.url.path.lower()
@@ -79,4 +86,14 @@ async def read_profile():
 async def read_profile():
     return FileResponse("static/admin.html")
 
-app.mount("/assets", StaticFiles(directory="static"), name="static")
+
+@app.get("/api/health")
+async def health_check():
+    logger.info("Health check запрос получен")
+    return {
+        "status": "working",
+        "message": "RandomTask API работает нормально",
+        "version": "1.0.0"
+    }
+
+app.mount("/static", StaticFiles(directory="static"), name="static")
