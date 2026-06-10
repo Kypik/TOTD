@@ -550,12 +550,8 @@ async function loadSavedCount(taskId) {
         const data = await apiFetch(`/api/tasks/count_saved?task_id=${taskId}`);
         if (data && data.count_saved_task !== undefined) {
             const count = data.count_saved_task;
-            if (count > 0) {
-                countBadge.textContent = `Пользователей сохранило: ${count}`;
-                countBadge.style.display = "";
-            } else {
-                countBadge.style.display = "none";
-            }
+            countBadge.textContent = `Пользователей сохранило: ${count}`;
+            countBadge.style.display = "";
         } else {
         }
     } catch (err) {
