@@ -13,28 +13,26 @@
 
     <header class="header">
         <div class="header__inner">
-            <a href="index.html" class="logo">
+            <a href="/" class="logo">
                 <span class="logo__mark">&gt;_</span>
                 <span>Random</span>Task
             </a>
             <nav class="nav">
-                <a href="index.html" class="nav__link">Главная</a>
-                <a href="profile.html" class="nav__link">Профиль</a>
-                <a href="admin.html" class="nav__link nav__link--active">Админка</a>
-                <a href="auth.html" class="nav__link" id="nav-auth-link">Войти</a>
+                <a href="/" class="nav__link">Главная</a>
+                <a href="/profile" class="nav__link">Профиль</a>
+                <a href="/admin" class="nav__link nav__link--active">Админка</a>
+                <a href="/auth" class="nav__link" id="nav-auth-link">Войти</a>
             </nav>
         </div>
     </header>
 
     <main class="app-container">
-        <!-- Сообщение об ошибке доступа -->
         <div id="admin-access-denied" class="panel hidden" style="max-width: 520px; margin: 2rem auto; text-align: center;">
             <h2 style="color: #f87171; margin-bottom: 0.75rem;">Доступ запрещён</h2>
             <p style="color: var(--muted); margin-bottom: 1.5rem;">Эта страница доступна только администраторам.</p>
-            <a href="index.html" class="btn btn--outline">Вернуться на главную</a>
+            <a href="/" class="btn btn--outline">Вернуться на главную</a>
         </div>
 
-        <!-- Основной контент админки -->
         <div id="admin-content" class="hidden">
             <div class="admin-header">
                 <h1 class="admin-title">Панель администратора</h1>
@@ -42,7 +40,6 @@
             </div>
 
             <div class="admin-layout">
-                <!-- Левая колонка: Категории -->
                 <section class="panel admin-panel">
                     <div class="admin-panel__header">
                         <h2 class="admin-panel__title">Категории</h2>
@@ -81,7 +78,6 @@
                     </div>
                 </section>
 
-                <!-- Правая колонка: Задачи -->
                 <section class="panel admin-panel">
                     <div class="admin-panel__header">
                         <h2 class="admin-panel__title">Новая задача</h2>

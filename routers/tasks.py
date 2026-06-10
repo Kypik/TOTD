@@ -44,3 +44,11 @@ async def get_random_task(category_slug: str = Query(None), difficulty: int = Qu
                 raise HTTPException(status_code=404, detail="Заданий не найдено.")
             
             return dict(random.choice(tasks))
+        
+@router.get("tasks/count_saved")
+async def get_count_saved(task_id: int, status: str = "saved"):
+    async with aiosqlite.connect(DATABASE_URL) as db:
+        async with db.execute("""SELECT COUNT(*) FROM user_tasks WHERE task_id = ? AND status = ?""", (task_id, status)) as cursor:
+            count = await cursor.fetchone()
+
+        return {"count_saved_task": count[0]}
